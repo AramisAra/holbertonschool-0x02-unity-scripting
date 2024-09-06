@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float floatpoint;
     private int score, health;
+    private string TeleporterName;
+    private bool isTeleport;
     Rigidbody rb;
     // Start is called before the first frame update
     void Start()
@@ -66,6 +68,25 @@ public class PlayerController : MonoBehaviour
             
             #endif
         }
-        
+        if (other.tag == "Teleporter" && !isTeleport)
+        {
+            if (other.name == "Teleporter-A")
+            {
+                transform.position = GameObject.Find("Teleporter-B").transform.position;
+                TeleporterName = "Teleporter-B";
+            }
+            else
+            {
+                transform.position = GameObject.Find("Teleporter-A").transform.position;
+                TeleporterName = "Teleporter-A";
+            }
+            isTeleport = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (TeleporterName == other.name)
+            isTeleport = false;
     }
 }
