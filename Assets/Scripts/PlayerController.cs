@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerController : MonoBehaviour
@@ -41,6 +44,27 @@ public class PlayerController : MonoBehaviour
             other.isTrigger = false;
             Destroy(other.gameObject);
             Debug.Log("Score: " + score);
+        }
+        if (other.tag == "Trap")
+        {
+            health -= 1;
+            Debug.Log("Health: " + health);
+            if (health == 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
+        if (other.tag == "Goal" && score > 15)
+        {
+            Debug.Log("You Win");
+            Application.Quit();
+
+            // This is use for in editor testing.
+            #if UNITY_EDITOR
+            
+            UnityEditor.EditorApplication.isPlaying = false;
+            
+            #endif
         }
         
     }
